@@ -16,15 +16,15 @@ logging.basicConfig(
 
 COMPANIES = {
     "RELIANCE": "RELIANCE.BSE"
-    # "TCS": "TCS.BSE",
-    # "HDFCBANK": "HDFCBANK.BSE",
-    # "ICICIBANK": "ICICIBANK.BSE",
-    # "BHARTIARTL": "BHARTIARTL.BSE",
-    # "SBIN": "SBIN.BSE",
-    # "INFY": "INFY.BSE",
-    # "LIC": "LICI.BSE",
-    # "HINDUNILVR": "HINDUNILVR.BSE",
-    # "ITC": "ITC.BSE"
+    "TCS": "TCS.BSE",
+    "HDFCBANK": "HDFCBANK.BSE",
+    "ICICIBANK": "ICICIBANK.BSE",
+    "BHARTIARTL": "BHARTIARTL.BSE",
+    "SBIN": "SBIN.BSE",
+    "INFY": "INFY.BSE",
+    "LIC": "LICI.BSE",
+    "HINDUNILVR": "HINDUNILVR.BSE",
+    "ITC": "ITC.BSE"
 }
 
 BASE_URL = "https://www.alphavantage.co/query"
@@ -32,6 +32,17 @@ BASE_URL = "https://www.alphavantage.co/query"
 engine = create_engine(f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
 
 def fetch_data(symbol, start_date=None, end_date=None):
+    """
+    Fetches historical daily stock market data from Alpha Vantage API.
+
+    Args:
+    - symbol (str): Stock symbol for the company.
+    - start_date (str, optional): Start date for fetching data (YYYY-MM-DD).
+    - end_date (str, optional): End date for fetching data (YYYY-MM-DD).
+
+    Returns:
+    - pd.DataFrame: DataFrame containing fetched stock data.
+    """
     params = {
         "function": "TIME_SERIES_DAILY",
         "symbol": symbol,
@@ -67,6 +78,16 @@ def fetch_data(symbol, start_date=None, end_date=None):
         return None
 
 def save_to_db(dataframe, table_name='historical_stock_prices'):
+    """
+    Saves DataFrame to a PostgreSQL database table.
+
+    Args:
+    - dataframe (pd.DataFrame): DataFrame containing stock data to be saved.
+    - table_name (str, optional): Name of the database table to save data to.
+
+    Returns:
+    - None
+    """
     try:
         dataframe.to_sql(table_name, engine, if_exists='append', index=False)
         logging.info(f"Data saved to database.")
