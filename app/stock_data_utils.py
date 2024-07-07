@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 
 COMPANIES = {
-    "RELIANCE": "RELIANCE.BSE"
+    "RELIANCE": "RELIANCE.BSE",
     "TCS": "TCS.BSE",
     "HDFCBANK": "HDFCBANK.BSE",
     "ICICIBANK": "ICICIBANK.BSE",
